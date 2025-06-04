@@ -8,7 +8,7 @@
     body {
       margin: 0;
       padding: 0;
-      background: linear-gradient(135deg, #121212, #1e1e1e);
+      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
       font-family: 'Segoe UI', sans-serif;
       display: flex;
       justify-content: center;
@@ -17,43 +17,53 @@
     }
 
     .container {
-      background: #1a1a1a;
-      padding: 40px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 50px 40px;
       border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      box-shadow: 0 0 30px rgba(0,0,0,0.4);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       text-align: center;
-      color: #fff;
-      max-width: 400px;
+      color: #eee;
       width: 90%;
+      max-width: 450px;
+      animation: fadeIn 0.8s ease-in-out;
     }
 
     p {
       font-size: 1.2em;
-      margin-bottom: 30px;
       color: #ccc;
+      margin-bottom: 30px;
     }
 
     .buttons {
       display: flex;
       justify-content: space-between;
-      gap: 10px;
+      gap: 15px;
     }
 
     a.button {
       flex: 1;
-      background: #0072ff;
+      background: linear-gradient(135deg, #1e90ff, #007bff);
       color: white;
-      padding: 12px;
+      padding: 14px 18px;
       text-decoration: none;
       border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      transition: background 0.3s ease;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1em;
+      transition: transform 0.2s ease, background 0.3s ease;
       text-align: center;
     }
 
     a.button:hover {
-      background: #005dd1;
+      background: linear-gradient(135deg, #007bff, #0056d2);
+      transform: translateY(-2px);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 400px) {
@@ -65,12 +75,11 @@
 </head>
 <body>
   <div class="container">
-    <p>Link zu eurem Pad:</p>
+    <p>📄 Link zu eurem Pad:</p>
     <div class="buttons">
       <a class="button" href="https://etherpad.wikimedia.org/p/4SxmUYlbL3D0D8bNM6g7" target="_blank">Pad öffnen</a>
-      <a class="button" href="#">Mehr Optionen</a>
+      <a class="button" href="#">Optionen</a>
     </div>
   </div>
 </body>
 </html>
-
