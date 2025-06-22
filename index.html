@@ -1,118 +1,158 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Login</title>
-  <style>
-    :root {
-      --bg-color: #121212;
-      --card-color: #1e1e1e;
-      --text-color: #f1f1f1;
-      --accent: #00bcd4;
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .login-box, .dashboard {
-      background-color: var(--card-color);
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-      width: 300px;
-      text-align: center;
-    }
-
-    input {
-      width: 100%;
-      padding: 0.5rem;
-      margin: 0.5rem 0;
-      border: none;
-      border-radius: 6px;
-      background-color: #2a2a2a;
-      color: white;
-    }
-
-    button {
-      background-color: var(--accent);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 1rem;
-      width: 100%;
-    }
-
-    .links {
-      display: grid;
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-
-    .link-card {
-      background-color: #2a2a2a;
-      padding: 1rem;
-      border-radius: 8px;
-      text-decoration: none;
-      color: white;
-      transition: background 0.3s;
-    }
-
-    .link-card:hover {
-      background-color: #333;
-    }
-
-    .small {
-      font-size: 0.75rem;
-      color: #888;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mein Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center">
 
-  <!-- LOGIN VIEW -->
-  <div class="login-box" id="loginBox">
-    <h2>Login</h2>
-    <input type="text" id="username" placeholder="Benutzername">
-    <input type="password" id="password" placeholder="Passwort">
-    <button onclick="login()">Einloggen</button>
-    <p class="small">Benutzer: <strong>Ma254</strong> / Passwort: <strong>Ma254</strong></p>
+  <!-- Login -->
+  <div id="login" class="bg-gray-800 p-8 rounded-lg shadow-lg w-96">
+    <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
+    <input
+      type="text"
+      id="username"
+      placeholder="Benutzername"
+      class="w-full p-3 mb-4 rounded bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+    />
+    <input
+      type="password"
+      id="password"
+      placeholder="Passwort"
+      class="w-full p-3 mb-6 rounded bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+    />
+    <button
+      onclick="login()"
+      class="w-full bg-cyan-600 hover:bg-cyan-500 transition rounded p-3 font-semibold"
+    >
+      Einloggen
+    </button>
   </div>
 
-  <!-- DASHBOARD VIEW -->
-  <div class="dashboard" id="dashboard" style="display:none;">
-    <h2>Mein Dashboard</h2>
-    <div class="links">
-      <a class="link-card" href="https://youtube.com" target="_blank">📺 YouTube</a>
-      <a class="link-card" href="https://discord.com" target="_blank">💬 Discord</a>
-      <a class="link-card" href="https://twitch.tv" target="_blank">🎮 Twitch</a>
-      <a class="link-card" href="https://srv662080.hstgr.cloud/instances/d2677ce5/console" target="_blank">🖥️ Server-Konsole</a>
+  <!-- Dashboard -->
+  <div id="dashboard" class="hidden flex flex-col max-w-5xl w-full p-6 gap-6">
+
+    <!-- Top Bar -->
+    <div class="flex justify-between items-center">
+      <h1 class="text-4xl font-bold">Mein Dashboard</h1>
+      <div>
+        <button id="toggleTheme" class="px-4 py-2 bg-cyan-600 rounded hover:bg-cyan-500 transition">Dark/Light Mode</button>
+      </div>
     </div>
+
+    <!-- Uhr + Datum -->
+    <div id="clock" class="text-xl font-mono"></div>
+
+    <!-- Server Status -->
+    <div class="bg-gray-800 p-4 rounded shadow">
+      <h2 class="text-2xl font-semibold mb-2">Server-Status</h2>
+      <p id="serverStatus" class="text-green-400 text-lg">Online</p>
+    </div>
+
+    <!-- Link-Kacheln -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <a href="https://youtube.com" target="_blank" class="bg-red-600 hover:bg-red-700 p-6 rounded shadow text-center text-white font-bold text-lg transition">
+        📺 YouTube
+      </a>
+      <a href="https://discord.com" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 p-6 rounded shadow text-center text-white font-bold text-lg transition">
+        💬 Discord
+      </a>
+      <a href="https://twitch.tv" target="_blank" class="bg-purple-700 hover:bg-purple-800 p-6 rounded shadow text-center text-white font-bold text-lg transition">
+        🎮 Twitch
+      </a>
+      <a href="https://srv662080.hstgr.cloud/instances/d2677ce5/console" target="_blank" class="bg-gray-700 hover:bg-gray-800 p-6 rounded shadow text-center text-white font-bold text-lg transition">
+        🖥️ Server-Konsole
+      </a>
+    </div>
+
+    <!-- News Feld -->
+    <div class="bg-gray-800 p-4 rounded shadow max-w-4xl mx-auto">
+      <h2 class="text-2xl font-semibold mb-2">News</h2>
+      <p>Willkommen zu deinem neuen Dashboard! Hier findest du alle wichtigen Links und Infos.</p>
+    </div>
+
+    <!-- Musikplayer (YouTube Embed) -->
+    <div class="bg-gray-800 p-4 rounded shadow max-w-4xl mx-auto">
+      <h2 class="text-2xl font-semibold mb-2">Musikplayer</h2>
+      <iframe width="100%" height="100" src="https://www.youtube.com/embed/videoseries?list=PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI&autoplay=0&controls=1" title="YouTube Musikplayer" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+
   </div>
 
-  <script>
-    function login() {
-      const user = document.getElementById("username").value;
-      const pass = document.getElementById("password").value;
+<script>
+  // Login-Daten (hardcoded)
+  const USERNAME = 'Ma254';
+  const PASSWORD = 'Ma254';
 
-      if (user === "Ma254" && pass === "Ma254") {
-        document.getElementById("loginBox").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-      } else {
-        alert("Falscher Benutzername oder Passwort!");
-      }
+  function login() {
+    const user = document.getElementById('username').value.trim();
+    const pass = document.getElementById('password').value.trim();
+
+    if (user === USERNAME && pass === PASSWORD) {
+      document.getElementById('login').style.display = 'none';
+      document.getElementById('dashboard').classList.remove('hidden');
+      startClock();
+    } else {
+      alert('Falscher Benutzername oder Passwort!');
     }
-  </script>
+  }
+
+  // Uhr + Datum
+  function startClock() {
+    const clockEl = document.getElementById('clock');
+    function updateClock() {
+      const now = new Date();
+      clockEl.textContent = now.toLocaleString('de-DE', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      });
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+  }
+
+  // Dark/Light Mode Toggle
+  const toggleBtn = document.getElementById('toggleTheme');
+  toggleBtn.addEventListener('click', () => {
+    if (document.documentElement.classList.contains('light')) {
+      document.documentElement.classList.remove('light');
+      document.body.classList.replace('bg-gray-100', 'bg-gray-900');
+      document.body.classList.replace('text-black', 'text-white');
+    } else {
+      document.documentElement.classList.add('light');
+      document.body.classList.replace('bg-gray-900', 'bg-gray-100');
+      document.body.classList.replace('text-white', 'text-black');
+    }
+  });
+
+  // Simulierter Server-Status (kann mit API ersetzt werden)
+  // Für Demo einfach immer "Online"
+  const serverStatusEl = document.getElementById('serverStatus');
+  // Optional: hier API-Anfrage, um echten Status zu prüfen
+</script>
+
+<style>
+  /* Light mode overrides */
+  .light {
+    --tw-bg-opacity: 1;
+  }
+  .light body {
+    background-color: #f3f4f6; /* bg-gray-100 */
+    color: #000000;
+  }
+  .light #login,
+  .light #dashboard > div {
+    background-color: #e5e7eb; /* bg-gray-200 */
+    color: #111827; /* text-gray-900 */
+  }
+</style>
 
 </body>
 </html>
