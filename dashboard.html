@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Minimalistisches Dashboard</title>
+<style>
+  /* Reset & Basis */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f0f0; color: #222;
+    transition: background-color 0.3s, color 0.3s;
+    min-height: 100vh; display: flex; flex-direction: column;
+  }
+  body.dark {
+    background: #121212; color: #eee;
+  }
+  header {
+    padding: 1rem;
+    background: #0078d7; color: white;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  body.dark header {
+    background: #004a99;
+  }
+  h1 {
+    margin: 0; font-weight: 600;
+  }
+  main {
+    flex-grow: 1;
+    padding: 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  /* Login */
+  #login-screen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 100;
+  }
+  #login-box {
+    background: white; padding: 2rem; border-radius: 8px;
+    width: 320px;
+  }
+  body.dark #login-box {
+    background: #222;
+    color: #eee;
+  }
+  #login-box h2 {
+    margin-top: 0;
+  }
+  #login-box input {
+    width: 100%; padding: 0.5rem; margin: 0.5rem 0 1rem 0; font-size: 1rem;
+    border: 1px solid #ccc; border-radius: 4px;
+  }
+  #login-box button {
+    width: 100%; padding: 0.6rem; background: #0078d7; color: white; border: none; border-radius: 4px;
+    font-size: 1rem; cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  #login-box button:hover {
+    background: #005fa3;
+  }
+  body.dark #login-box button:hover {
+    background: #003f6f;
+  }
+  /* Links */
+  .link-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .link-tile {
+    background: #0078d7; color: white; padding: 1.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  .link-tile:hover {
+    background: #005fa3;
+    transform: translateY(-3px);
+  }
+  body.dark .link-tile {
+    background: #004a99;
+  }
+  body.dark .link-tile:hover {
+    background: #003f6f;
+  }
+  /* Serverstatus */
+  .server-status {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  .status-dot {
+    width: 16px; height: 16px; border-radius: 50%;
+    background: #f00;
+    box-shadow: 0 0 5px #f00;
+  }
+  .status-dot.online {
+    background: #0f0;
+    box-shadow: 0 0 8px #0f0;
+  }
+  /* Uhr & Datum */
+  #clock {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  /* To-Do-Liste */
+  #todo {
+    background: white; padding: 1rem; border-radius: 8px;
+    max-width: 400px;
+    margin-bottom: 1rem;
+  }
+  body.dark #todo {
+    background: #222;
+  }
+  #todo h3 {
+    margin-top: 0;
+  }
+  #todo-list {
+    list-style: none; padding: 0; margin: 0;
+  }
+  #todo-list li {
+    display: flex; align-items: center; margin-bottom: 0.5rem;
+  }
+  #todo-list input[type="checkbox"] {
+    margin-right: 0.75rem;
+    transform: scale(1.3);
+  }
+  #new-task-input {
+    width: calc(100% - 90px);
+    padding: 0.4rem;
+    font-size: 1rem;
+  }
+  #add-task-btn {
+    padding: 0.45rem 1rem;
+    margin-left: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    background: #0078d7;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  #add-task-btn:hover {
+    background: #005fa3;
+  }
+  body.dark #add-task-btn:hover {
+    background: #003f6f;
+  }
+  /* News */
+  #news {
+    background: white; padding: 1rem; border-radius: 8px;
+    max-width: 600px;
+  }
+  body.dark #news {
+    background: #222;
+  }
+  #news h3 {
+    margin-top: 0;
+  }
+  #news-content {
+    white-space: pre-line;
+  }
+  /* Dark mode toggle */
+  #dark-mode-toggle {
+    cursor: pointer;
+    background: transparent;
+    border: 2px solid white;
+    border-radius: 20px;
+    padding: 0.2rem 0.8rem;
+    font-weight: 600;
+    user-select: none;
+  }
+  body.dark #dark-mode-toggle {
+    border-color: #bbb;
+  }
+  /* Responsive */
+  @media (max-width: 600px) {
+    main {
+      padding: 0.5rem;
+    }
+    #todo, #news {
+      max-width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div id="login-box">
+    <h2>Login</h2>
+    <input id="username" type="text" placeholder="Benutzername" autocomplete="username" />
+    <input id="password" type="password" placeholder="Passwort" autocomplete="current-password" />
+    <button id="login-btn">Anmelden</button>
+    <p id="login-error" style="color: red; display:none; margin-top:0.5rem;">Falscher Benutzername oder Passwort</p>
+  </div>
+</div>
+
+<header>
+  <h1>Dashboard</h1>
+  <div id="dark-mode-toggle">🌙 Dark Mode</div>
+</header>
+
+<main>
+  <section class="link-grid" aria-label="Links">
+    <div class="link-tile" onclick="openLink('https://www.youtube.com/')">YouTube</div>
+    <div class="link-tile" onclick="openLink('https://discord.com/')">Discord</div>
+    <div class="link-tile" onclick="openLink('https://www.twitch.tv/')">Twitch</div>
+    <div class="link-tile" onclick="openLink('https://srv662080.hstgr.cloud/instances/d2677ce5/console')">Server-Konsole</div>
+  </section>
+
+  <div class="server-status">
+    Serverstatus: <div id="status-dot" class="status-dot"></div><span id="status-text"></span>
+  </div>
+
+  <div id="clock" aria-live="polite" aria-atomic="true"></div>
+
+  <section id="todo" aria-label="To-Do Liste">
+    <h3>To-Do Liste</h3>
+    <ul id="todo-list"></ul>
+    <input type="text" id="new-task-input" placeholder="Neue Aufgabe..." aria-label="Neue Aufgabe eingeben" />
+    <button id="add-task-btn">Hinzufügen</button>
+  </section>
+
+  <section id="news" aria-label="News & Ankündigungen">
+    <h3>News</h3>
+    <div id="news-content">Willkommen im Dashboard! Hier kannst du wichtige Ankündigungen hinzufügen.</div>
+  </section>
+</main>
+
+<script>
+  // Login
+  const loginScreen = document.getElementById('login-screen');
+  const loginBtn = document.getElementById('login-btn');
+  const usernameInput = document.getElementById('username');
+  const passwordInput = document.getElementById('password');
+  const loginError = document.getElementById('login-error');
+
+  const correctUser = 'Ma254';
+  const correctPass = 'Ma254';
+
+  loginBtn.addEventListener('click', () => {
+    if(usernameInput.value === correctUser && passwordInput.value === correctPass){
+      loginScreen.style.display = 'none';
+    } else {
+      loginError.style.display = 'block';
+    }
+  });
+
+  // Open links in new tab
+  function openLink(url){
+    window.open(url, '_blank', 'noopener');
+  }
+
+  // Serverstatus (Dummy-Check)
+  const statusDot = document.getElementById('status-dot');
+  const statusText = document.getElementById('status-text');
+
+  async function checkServerStatus(){
+    try {
+      // Beispiel: einfache Abfrage der Server-Konsole URL, hier nur Demo
+      const res = await fetch('https://srv662080.hstgr.cloud/instances/d2677ce5/console', { method: 'HEAD' });
+      if(res.ok){
+        statusDot.classList.add('online');
+        statusText.textContent = ' Online';
+      } else {
+        statusDot.classList.remove('online');
+        statusText.textContent = ' Offline';
+      }
+    } catch {
+      statusDot.classList.remove('online');
+      statusText.textContent = ' Offline';
+    }
+  }
+  checkServerStatus();
+
+  // Uhr & Datum
+  const clock = document.getElementById('clock');
+  function updateClock(){
+    const now = new Date();
+    const time = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const date = now.toLocaleDateString('de-DE', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+    clock.textContent = `${time} — ${date}`;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // To-Do Liste mit localStorage
+  const todoList = document.getElementById('todo-list');
+  const newTaskInput = document.getElementById('new-task-input');
+  const addTaskBtn = document.getElementById('add-task-btn');
+
+  function saveTasks(){
+    const tasks = [];
+    todoList.querySelectorAll('li').forEach(li => {
+      tasks.push({
+        text: li.querySelector('label').textContent,
+        done: li.querySelector('input').checked
+      });
+    });
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }
+  function loadTasks(){
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    todoList.innerHTML = '';
+    tasks.forEach(task => {
+      addTask(task.text, task.done);
+    });
+  }
+  function addTask(text, done = false){
+    const li = document.createElement('li');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = done;
+    checkbox.addEventListener('change', saveTasks);
+    const label = document.createElement('label');
+    label.textContent = text;
+    li.appendChild(checkbox);
+    li.appendChild(label);
+    todoList.appendChild(li);
+  }
+  addTaskBtn.addEventListener('click', () => {
+    const val = newTaskInput.value.trim();
+    if(val){
+      addTask(val);
+      newTaskInput.value = '';
+      saveTasks();
+    }
+  });
+  loadTasks();
+
+  // News (editable)
+  const newsContent = document.getElementById('news-content');
+  newsContent.contentEditable = true;
+  newsContent.addEventListener('input', () => {
+    localStorage.setItem('news', newsContent.textContent);
+  });
+  // Lade News aus localStorage
+  const savedNews = localStorage.getItem('news');
+  if(savedNews) newsContent.textContent = savedNews;
+
+  // Dark Mode Toggle
+  const darkModeToggle = document.getElementById('dark-mode-toggle');
+  darkModeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    if(document.body.classList.contains('dark')){
+      darkModeToggle.textContent = '☀️ Light Mode';
+      localStorage.setItem('darkMode', 'true');
+    } else {
+      darkModeToggle.textContent = '🌙 Dark Mode';
+      localStorage.setItem('darkMode', 'false');
+    }
+  });
+  // Dark Mode aus localStorage laden
+  if(localStorage.getItem('darkMode') === 'true'){
+    document.body.classList.add('dark');
+    darkModeToggle.textContent = '☀️ Light Mode';
+  }
+  
+  // Automatischer Refresh alle 5 Minuten (300000ms)
+  setInterval(() => {
+    checkServerStatus();
+    // News & To-Do laden nicht nötig, da lokal
+  }, 300000);
+</script>
+
+</body>
+</html>
